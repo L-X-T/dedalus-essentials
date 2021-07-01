@@ -19,7 +19,7 @@ export class FlightSearchComponent implements OnInit, OnDestroy {
   flights$?: Observable<Flight[]>; // observable
   readonly flightsSubject = new BehaviorSubject<Flight[]>([]); // subject
   readonly flightsSignal = signal<Flight[]>([]); // signal
-flightsLength = computed(() => this.flightsSignal().length); // signal
+  flightsLength = computed(() => this.flightsSignal().length); // signal
   flightsSubscription?: Subscription;
   private readonly onDestroySubject = new Subject<void>();
   readonly terminator$ = this.onDestroySubject.asObservable();
@@ -28,17 +28,17 @@ flightsLength = computed(() => this.flightsSignal().length); // signal
 
   message = '';
 
+  basket: { [id: number]: boolean } = {
+    3: true,
+    5: true
+  };
+
   private readonly destroyRef = inject(DestroyRef);
   private readonly flightService = inject(FlightService);
 
   constructor() {
     effect(() => console.log(this.flightsSignal(), this.flightsLength()));
   }
-
-  basket: { [id: number]: boolean } = {
-    3: true,
-    5: true
-  };
 
   ngOnInit(): void {
     if (this.from && this.to) {
