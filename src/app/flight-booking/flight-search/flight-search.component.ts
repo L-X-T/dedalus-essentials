@@ -6,11 +6,16 @@ import { Flight } from '../../entities/flight';
 import { FlightService } from '../../services/flight.service';
 import { BehaviorSubject, Observable, Observer, of, pipe, Subject, Subscription } from 'rxjs';
 import { catchError, share, takeUntil } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
+import { CityPipe } from '../../shared/pipes/city.pipe';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-flight-search',
   templateUrl: './flight-search.component.html',
-  styleUrls: ['./flight-search.component.css']
+  styleUrls: ['./flight-search.component.css'],
+  standalone: true,
+  imports: [CommonModule, FormsModule, CityPipe]
 })
 export class FlightSearchComponent implements OnDestroy {
   from = 'Hamburg';
@@ -19,7 +24,7 @@ export class FlightSearchComponent implements OnDestroy {
   flights$?: Observable<Flight[]>; // observable
   readonly flightsSubject = new BehaviorSubject<Flight[]>([]); // subject
   readonly flightsSignal = signal<Flight[]>([]); // signal
-flightsLength = computed(() => this.flightsSignal().length); // signal
+  flightsLength = computed(() => this.flightsSignal().length); // signal
   flightsSubscription?: Subscription;
   private readonly onDestroySubject = new Subject<void>();
   readonly terminator$ = this.onDestroySubject.asObservable();
